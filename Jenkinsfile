@@ -86,7 +86,17 @@ pipeline {
             }
             steps {
                 script {
-                    sh "helm upgrade --install nodejs-app ${HELM_CHART_PATH} --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
+                    // Verify Helm release history before upgrade
+                    sh "helm history nodejs-app --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
+
+                    // Force upgrade using --force flag
+                    sh "helm upgrade --install nodejs-app ${HELM_CHART_PATH} --namespace default --kubeconfig /var/lib/jenkins/.kube/config --force"
+
+                    // Verify Helm release history after upgrade
+                    sh "helm history nodejs-app --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
+
+                    // Describe the deployment to ensure image is updated
+                    sh "kubectl describe deployment nodejs-app --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
                 }
             }
         }
