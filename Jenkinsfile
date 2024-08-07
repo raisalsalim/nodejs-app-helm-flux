@@ -23,6 +23,7 @@ pipeline {
         stage('Update Helm Chart') {
             steps {
                 script {
+                    // Update Helm chart values with the new Docker image tag
                     sh "sed -i 's/tag:.*/tag: \"${env.BUILD_ID}\"/' ${HELM_CHART_PATH}/values.yaml"
                     sh "git config --global user.email 'raisalsalim333@gmail.com'"
                     sh "git config --global user.name 'raisalsalim'"
@@ -37,9 +38,11 @@ pipeline {
         }
         stage('Deploy to Kubernetes') {
             when {
-                // Only deploy if the branch is 'main' and the commit is not related to Helm chart updates
+                // Check if the commit message indicates it's not a Helm chart update
                 expression {
-                    return !sh(script: 'git diff --name-only HEAD^ HEAD | grep -q "^${HELM_CHART_PATH}/"', returnStatus: true)
+                    // Use a commit message flag to avoid processing Helm chart commits
+                    def commitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                    return !commitMessage.contains('Update Helm chart image tag')
                 }
             }
             steps {
