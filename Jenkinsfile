@@ -44,6 +44,7 @@ pipeline {
                 expression {
                     // Avoid deploying if the latest commit message is from Jenkins
                     def commitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                    echo "Latest commit message: ${commitMessage}"
                     return !commitMessage.startsWith('[JENKINS]')
                 }
             }
