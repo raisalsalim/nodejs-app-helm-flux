@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE = "raisalsalim/nodejs-app"
-        DOCKER_CREDENTIALS_ID = "dockerhub-credentials"
+        DOCKER_CREDENTIALS_ID = "docker-credentials"
         GIT_CREDENTIALS_ID = "git-credentials"  // Use the correct Git credentials ID
         GIT_REPO = "https://github.com/raisalsalim/nodejs-app-helm-flux.git"
         HELM_CHART_PATH = "charts/nodejs-app"
