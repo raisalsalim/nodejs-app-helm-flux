@@ -16,12 +16,12 @@ app.get('/', (req, res) => {
           background-color: #f0f0f0; /* Optional: change background color */
         }
         h1 {
-          color: #00ff00; /* Change this to your desired text color */
+          color: #ff5733; /* Change this to your desired text color */
         }
       </style>
     </head>
     <body>
-      <h1>hello world!!!</h1>
+      <h1>hello world...</h1>
     </body>
     </html>
   `);
