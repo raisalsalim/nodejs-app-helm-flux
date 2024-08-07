@@ -86,7 +86,7 @@ pipeline {
                     sh "docker tag ${imageTag} ${localRegistryImage}"
                     
                     // Push the Docker image to the local registry
-                    docker.withRegistry("http://${LOCAL_REGISTRY}", 'local-registry-credentials') {
+                    docker.withRegistry("http://${LOCAL_REGISTRY}" {
                         sh "docker push ${localRegistryImage}"
                     }
                 }
