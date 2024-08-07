@@ -1,0 +1,21 @@
+replicaCount: 1
+
+image:
+  repository: raisalsalim/nodejs-app
+  tag: "21"
+  pullPolicy: Always
+
+service:
+  type: NodePort
+  port: 80
+  nodePort: 30007
+
+ingress:
+  enabled: true
+  annotations: {}
+  hosts:
+    - host: nodejs-app.local
+      paths: ["/"]
+  tls: []
+
+resources: {}

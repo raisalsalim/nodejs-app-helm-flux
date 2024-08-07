@@ -1,0 +1,21 @@
+# clusters/minikube/flux-system/helmrelease.yaml
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: nodejs-app
+  namespace: flux-system
+spec:
+  releaseName: nodejs-app
+  interval: 1m
+  chart:
+    spec:
+      chart: ./charts/nodejs-app
+      sourceRef:
+        kind: GitRepository
+        name: nodejs-app
+        namespace: flux-system
+      interval: 1m
+  values:
+    image:
+      repository: raisalsalim/nodejs-app
+      tag: latest
