@@ -38,7 +38,8 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    sh "helm upgrade nodejs-app ${HELM_CHART_PATH} --namespace default --kubeconfig ~/.kube/config"
+                    // Ensure the Kubernetes config file path is correct and accessible
+                    sh "helm upgrade nodejs-app ${HELM_CHART_PATH} --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
                 }
             }
         }
