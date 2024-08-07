@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: raisalsalim/nodejs-app
-  tag: "41"
+  tag: "42"
   pullPolicy: Always
 
 service:
