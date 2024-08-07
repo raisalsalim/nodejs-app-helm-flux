@@ -79,8 +79,15 @@ pipeline {
             }
             steps {
                 script {
-                    def app = docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}")
-                    app.push("${LOCAL_REGISTRY}/${DOCKER_IMAGE}:${env.BUILD_ID}")
+                    def imageTag = "${DOCKER_IMAGE}:${env.BUILD_ID}"
+                    def localRegistryImage = "${LOCAL_REGISTRY}/${DOCKER_IMAGE}:${env.BUILD_ID}"
+
+                    // Tag the Docker image
+                    docker.image("${DOCKER_IMAGE}:60").tag(localRegistryImage)
+                    
+                    // Push the Docker image to the local registry
+                    docker.withRegistry("http://${LOCAL_REGISTRY}", 'local-registry-credentials') {
+                    docker.image(localRegistryImage).push()
                 }
             }
         }
