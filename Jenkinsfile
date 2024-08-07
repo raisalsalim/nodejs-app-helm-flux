@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "raisalsalim/nodejs-app"
         DOCKER_CREDENTIALS = credentials('docker-credentials')
-        GIT_CREDENTIALS = credentials('github-credentials')
+        GIT_CREDENTIALS = credentials('git-credentials')
         GIT_REPO = "https://github.com/raisalsalim/nodejs-app-helm-flux.git"
         HELM_CHART_PATH = "charts/nodejs-app"
         DOCKERFILE_PATH = "nodejs-app/Dockerfile"
