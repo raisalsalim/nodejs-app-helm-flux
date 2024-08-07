@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
     <!DOCTYPE html>
     <html>
     <head>
-      <title>raisal</title>
+      <title>Raisal</title>
       <style>
         /* Inline CSS to change the text color */
         body {
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
       </style>
     </head>
     <body>
-      <h1>Hello World!!!...</h1>
+      <h1>HELLO WORLD!!!...</h1>
     </body>
     </html>
   `);
