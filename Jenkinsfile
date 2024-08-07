@@ -23,9 +23,13 @@ pipeline {
         stage('Update Helm Chart') {
             steps {
                 script {
+                    // Update Helm chart values.yaml with new image tag
                     sh "sed -i 's/tag:.*/tag: \"${env.BUILD_ID}\"/' ${HELM_CHART_PATH}/values.yaml"
+                    
+                    // Configure Git for commits
                     sh "git config --global user.email 'raisalsalim333@gmail.com'"
                     sh "git config --global user.name 'raisalsalim'"
+                    
                     withCredentials([usernamePassword(credentialsId: GIT_CREDENTIALS_ID, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                         sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/raisalsalim/nodejs-app-helm-flux.git"
                         sh "git add ${HELM_CHART_PATH}/values.yaml"
@@ -38,9 +42,8 @@ pipeline {
         stage('Deploy to Kubernetes') {
             when {
                 expression {
-                    // Get the latest commit message
+                    // Avoid deploying if the latest commit message is from Jenkins
                     def commitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
-                    // Skip deployment if commit message starts with '[JENKINS]'
                     return !commitMessage.startsWith('[JENKINS]')
                 }
             }
