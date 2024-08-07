@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
     </head>
     <body>
 <<<<<<< HEAD
-      <h1>HELLO WORLD!!!. HIII!!!...</h1>
+      <h1>HELLO WORLD!!!... HIII!!!...</h1>
 =======
       <h1>This is my node app.</h1>
 >>>>>>> origin/main
