@@ -92,10 +92,10 @@ pipeline {
             }
         }
     }
+    }
     post {
         always {
             echo 'Finished the pipeline'
-            }
-        }
+         }
     }
 }
