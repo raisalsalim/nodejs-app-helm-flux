@@ -63,9 +63,9 @@ pipeline {
                     sh "git config --global user.name 'raisalsalim'"
                     
                     withCredentials([usernamePassword(credentialsId: GIT_CREDENTIALS_ID, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-                        // Avoid using credentials in URL; prefer using git credentials directly
+                        // Use the credentials directly in the Git commands
                         sh """
-                            git remote set-url origin https://github.com/raisalsalim/nodejs-app-helm-flux.git
+                            git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/raisalsalim/nodejs-app-helm-flux.git
                             git add ${HELM_CHART_PATH}/values.yaml
                             git commit -m '[JENKINS] Update Helm chart image tag to ${env.BUILD_ID}'
                             git push origin HEAD:main
