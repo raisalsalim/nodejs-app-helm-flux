@@ -7,13 +7,14 @@ pipeline {
         GIT_REPO = "https://github.com/raisalsalim/nodejs-app-helm-flux.git"
         HELM_CHART_PATH = "charts/nodejs-app"
         DOCKERFILE_PATH = "nodejs-app/Dockerfile"
+        BRANCH_NAME = "main" // Add this line to specify the branch
     }
     stages {
         stage('Checkout Code') {
             steps {
                 script {
                     // Checkout the repository
-                    git url: GIT_REPO, credentialsId: GIT_CREDENTIALS_ID
+                    git branch: "${BRANCH_NAME}", url: GIT_REPO, credentialsId: GIT_CREDENTIALS_ID
                 }
             }
         }
@@ -38,7 +39,7 @@ pipeline {
                         sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/raisalsalim/nodejs-app-helm-flux.git"
                         sh "git add ${HELM_CHART_PATH}/values.yaml"
                         sh "git commit -m 'Update Helm chart image tag to ${env.BUILD_ID}'"
-                        sh "git push origin HEAD:main"
+                        sh "git push origin HEAD:${BRANCH_NAME}"
                     }
                 }
             }
