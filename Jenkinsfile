@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             when {
-                expression { currentBuild.result == null || currentBuild.result != 'SUCCESS' }
+                expression { currentBuild.result != 'SUCCESS' }
             }
             steps {
                 script {
@@ -45,11 +45,21 @@ pipeline {
         }
         stage('Update Helm Chart') {
             when {
-                expression { currentBuild.result == null || currentBuild.result != 'SUCCESS' }
+                expression { currentBuild.result != 'SUCCESS' }
             }
             steps {
                 script {
+                    // Output current working directory
+                    sh 'pwd'
+
+                    // Output contents of values.yaml before update
+                    sh "cat ${HELM_CHART_PATH}/values.yaml"
+
+                    // Update image tag in values.yaml
                     sh "sed -i 's/tag:.*/tag: \"${env.BUILD_ID}\"/' ${HELM_CHART_PATH}/values.yaml"
+
+                    // Output contents of values.yaml after update
+                    sh "cat ${HELM_CHART_PATH}/values.yaml"
                     
                     sh "git config --global user.email 'raisalsalim333@gmail.com'"
                     sh "git config --global user.name 'raisalsalim'"
@@ -65,7 +75,7 @@ pipeline {
         }
         stage('Deploy to Kubernetes') {
             when {
-                expression { currentBuild.result == null || currentBuild.result != 'SUCCESS' }
+                expression { currentBuild.result != 'SUCCESS' }
             }
             steps {
                 script {
@@ -75,7 +85,7 @@ pipeline {
         }
         stage('Push to Local Registry') {
             when {
-                expression { currentBuild.result == null || currentBuild.result != 'SUCCESS' }
+                expression { currentBuild.result != 'SUCCESS' }
             }
             steps {
                 script {
