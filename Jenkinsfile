@@ -61,15 +61,22 @@ pipeline {
                     // Output contents of values.yaml after update
                     sh "cat ${HELM_CHART_PATH}/values.yaml"
                     
+                    // Git configuration and status check
                     sh "git config --global user.email 'raisalsalim333@gmail.com'"
                     sh "git config --global user.name 'raisalsalim'"
+                    sh "git status"
                     
                     withCredentials([usernamePassword(credentialsId: GIT_CREDENTIALS_ID, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                         sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/raisalsalim/nodejs-app-helm-flux.git"
                         sh "git add ${HELM_CHART_PATH}/values.yaml"
+                        sh "git status"
                         sh "git commit -m '[JENKINS] Update Helm chart image tag to ${env.BUILD_ID}'"
+                        sh "git log -1"
                         sh "git push origin HEAD:main"
                     }
+                    
+                    // Output Git logs to confirm push
+                    sh "git log -1"
                 }
             }
         }
