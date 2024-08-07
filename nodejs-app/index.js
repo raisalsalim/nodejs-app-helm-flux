@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
         /* Inline CSS to change the text color */
         body {
           font-family: Arial, sans-serif;
-          background-color: #f0f0f0; /* Optional: change background color */
+          background-color: #00ff00; /* Optional: change background color */
         }
         h1 {
           color: #ff5733; /* Change this to your desired text color */
