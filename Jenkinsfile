@@ -3,10 +3,11 @@ pipeline {
     environment {
         DOCKER_IMAGE = "raisalsalim/nodejs-app"
         DOCKER_CREDENTIALS_ID = "docker-credentials"
-        GIT_CREDENTIALS_ID = "git-credentials"  // Use the correct Git credentials ID
+        GIT_CREDENTIALS_ID = "git-credentials"  // Ensure this is the correct Git credentials ID
         GIT_REPO = "https://github.com/raisalsalim/nodejs-app-helm-flux.git"
         HELM_CHART_PATH = "charts/nodejs-app"
         DOCKERFILE_PATH = "nodejs-app/Dockerfile"  // Path to Dockerfile
+        KUBECONFIG_CREDENTIALS_ID = "kubeconfig-credentials" // Add Kubeconfig credentials ID
     }
     stages {
         stage('Build Docker Image') {
@@ -43,8 +44,10 @@ pipeline {
         stage('Restart Kubernetes Deployment') {
             steps {
                 script {
-                    // Restart the Kubernetes deployment
-                    sh "kubectl rollout restart deployment nodejs-app -n flux-system"
+                    withCredentials([file(credentialsId: KUBECONFIG_CREDENTIALS_ID, variable: 'KUBECONFIG')]) {
+                        // Restart the Kubernetes deployment
+                        sh "kubectl rollout restart deployment nodejs-app -n flux-system"
+                    }
                 }
             }
         }
