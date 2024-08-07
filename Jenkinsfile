@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             when {
-                expression { currentBuild.result != 'SUCCESS' }
+                expression { currentBuild.result == null || currentBuild.result != 'SUCCESS' }
             }
             steps {
                 script {
@@ -45,7 +45,7 @@ pipeline {
         }
         stage('Update Helm Chart') {
             when {
-                expression { currentBuild.result != 'SUCCESS' }
+                expression { currentBuild.result == null || currentBuild.result != 'SUCCESS' }
             }
             steps {
                 script {
@@ -65,17 +65,17 @@ pipeline {
         }
         stage('Deploy to Kubernetes') {
             when {
-                expression { currentBuild.result != 'SUCCESS' }
+                expression { currentBuild.result == null || currentBuild.result != 'SUCCESS' }
             }
             steps {
                 script {
-                    sh "helm upgrade nodejs-app ${HELM_CHART_PATH} --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
+                    sh "helm upgrade --install nodejs-app ${HELM_CHART_PATH} --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
                 }
             }
         }
         stage('Push to Local Registry') {
             when {
-                expression { currentBuild.result != 'SUCCESS' }
+                expression { currentBuild.result == null || currentBuild.result != 'SUCCESS' }
             }
             steps {
                 script {
