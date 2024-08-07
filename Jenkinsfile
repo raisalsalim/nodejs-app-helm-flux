@@ -36,6 +36,12 @@ pipeline {
             }
         }
         stage('Deploy to Kubernetes') {
+            when {
+                // Only deploy if the branch is 'main' and the commit is not related to Helm chart updates
+                expression {
+                    return !sh(script: 'git diff --name-only HEAD^ HEAD | grep -q "^${HELM_CHART_PATH}/"', returnStatus: true)
+                }
+            }
             steps {
                 script {
                     // Ensure the Kubernetes config file path is correct and accessible
