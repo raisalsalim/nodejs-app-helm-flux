@@ -106,6 +106,9 @@ pipeline {
                     sh "kubectl describe deployment nodejs-app --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
 
                     // Print the output of the application using curl
+                    echo "Waiting for the application to be ready..."
+                    sleep 30 // Wait for 30 seconds (adjust as needed)
+
                     echo "Checking application status with curl..."
                     sh "curl -s ${APP_URL}"
                 }
