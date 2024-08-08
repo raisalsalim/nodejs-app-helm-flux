@@ -86,16 +86,22 @@ pipeline {
             }
             steps {
                 script {
-                    // Verify Helm release history before upgrade
+                    // Check if the Ingress resource exists
+                    def ingressExists = sh(
+                        script: "kubectl get ingress nodejs-app-ingress --namespace default --kubeconfig /var/lib/jenkins/.kube/config || echo 'NotFound'",
+                        returnStdout: true
+                    ).trim()
+        
+                    // If the Ingress exists, delete it
+                    if (ingressExists != 'NotFound') {
+                        echo "Ingress resource 'nodejs-app-ingress' exists, deleting it before proceeding with Helm upgrade."
+                        sh "kubectl delete ingress nodejs-app-ingress --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
+                    }
+        
+                    // Proceed with Helm upgrade
                     sh "helm history nodejs-app --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
-
-                    // Force upgrade using --force flag
                     sh "helm upgrade --install nodejs-app ${HELM_CHART_PATH} --namespace default --kubeconfig /var/lib/jenkins/.kube/config --set image.tag=${env.BUILD_ID} --force"
-
-                    // Verify Helm release history after upgrade
                     sh "helm history nodejs-app --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
-
-                    // Describe the deployment to ensure image is updated
                     sh "kubectl describe deployment nodejs-app --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
                 }
             }
