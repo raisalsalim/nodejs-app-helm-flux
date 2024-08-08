@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
     <!DOCTYPE html>
     <html>
     <head>
-      <title>Raisal</title>
+      <title>Raisal-Node</title>
     </head>
     <body>
       <h1>Hello World!!!</h1>
