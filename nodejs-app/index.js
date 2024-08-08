@@ -3,24 +3,15 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  // HTML with inline CSS
+  // HTML without inline CSS
   res.send(`
     <!DOCTYPE html>
     <html>
     <head>
       <title>Raisal</title>
-      <style>
-        /* Inline CSS to change the text color */
-        body {
-          background-color: #f0f0f0; /* Optional: change background color */
-        }
-        h1 {
-          color: #3d00ff; /* Change this to your desired text color */
-        }
-      </style>
     </head>
     <body>
-      <h1>HELLO WORLD!!!... HIII!!!...</h1>
+      <h1>HELLO WORLD!!!</h1>
     </body>
     </html>
   `);
