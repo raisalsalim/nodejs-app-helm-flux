@@ -8,7 +8,7 @@ pipeline {
         HELM_CHART_PATH = "charts/nodejs-app"
         DOCKERFILE_PATH = "nodejs-app/Dockerfile"
         LOCAL_REGISTRY = "localhost:5000" // Local registry URL
-        APP_URL = "http://your-app-url" // Replace with your app's URL or IP address
+        APP_URL = "http://nodejs-app.local" // Replace with your app's URL or IP address
     }
     stages {
         stage('Checkout SCM') {
