@@ -90,7 +90,7 @@ pipeline {
                     sh "helm history nodejs-app --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
 
                     // Force upgrade using --force flag
-                    sh "helm upgrade --install nodejs-app ${HELM_CHART_PATH} --namespace default --kubeconfig /var/lib/jenkins/.kube/config --force"
+                    sh "helm upgrade --install nodejs-app ${HELM_CHART_PATH} --namespace default --kubeconfig /var/lib/jenkins/.kube/config --set image.tag=${env.BUILD_ID} --force"
 
                     // Verify Helm release history after upgrade
                     sh "helm history nodejs-app --namespace default --kubeconfig /var/lib/jenkins/.kube/config"
